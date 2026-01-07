@@ -1,5 +1,16 @@
-import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
-import type { UserCreateInput } from 'src/generated/prisma/models';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Patch,
+  Post,
+} from '@nestjs/common';
+import type {
+  UserCreateInput,
+  UserUpdateInput,
+} from 'src/generated/prisma/models';
 import { UserService } from './user.service';
 
 @Controller('user')
@@ -10,12 +21,13 @@ export class UserController {
   create(@Body() data: UserCreateInput) {
     return this.userService.createUser(data);
   }
-
-  @Get()
-  findAll() {
-    return this.userService.findAll();
+  @Patch(':id')
+  update(
+    @Param('id') id: string,
+    @Body() data: Pick<UserUpdateInput, 'name' | 'nickname' | 'profileImage'>,
+  ) {
+    return this.userService.update(Number(id), data);
   }
-
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.userService.findOne(Number(id));
