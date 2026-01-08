@@ -41,6 +41,9 @@ export class UserService {
     }
     return user;
   }
+  async findByEmail(email: string) {
+    return this.prisma.user.findUnique({ where: { email } });
+  }
   async update(
     id: number,
     data: Pick<UserUpdateInput, 'name' | 'nickname' | 'profileImage'>,
