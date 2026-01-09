@@ -7,6 +7,8 @@ import {
   Patch,
   Post,
 } from '@nestjs/common';
+// import { AuthGuard } from 'src/auth/auth.guard';
+import { Public } from 'src/auth/roles.decorator';
 import type {
   UserCreateInput,
   UserUpdateInput,
@@ -14,9 +16,11 @@ import type {
 import { UserService } from './user.service';
 
 @Controller('user')
+// @UseGuards(AuthGuard)
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
+  @Public()
   @Post()
   create(@Body() data: UserCreateInput) {
     return this.userService.createUser(data);
